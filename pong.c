@@ -1,6 +1,11 @@
 
 //Using libs SDL, glibc
-#include <SDL2/SDL.h>	//SDL version 2.0
+#if defined (NXDK)
+#include <SDL.h>	//SDL version 2.0
+#include <hal/video.h>
+#else
+#include <SDL2/SDL.h>
+#endif
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -546,25 +551,33 @@ int main (int argc, char *args[]) {
 	// Initialize the ball position data. 
 	init_game();
 	
+	SDL_GameController *controller = NULL;
+		for (int i = 0; i < SDL_NumJoysticks(); i++) { // For the time that i is smaller than the number of connected Joysticks
+
+        if(SDL_IsGameController(i)) { // If i (which we use to iterate through the connected controllers) as a port number is a Game Controller
+            controller = SDL_GameControllerOpen(i); // Open the controller
+
+            if(controller) { // If we find that we opened a controller
+                break; // Exit the loop
+            }
+        }
+    }
+
 	//render loop
 	while(quit == 0) {
-	
-		//check for new events every frame
-		SDL_PumpEvents();
-
-		const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 		
-		if (keystate[SDL_SCANCODE_ESCAPE]) {
+		
+		if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_X)) {
 		
 			quit = 1;
 		}
 		
-		if (keystate[SDL_SCANCODE_DOWN]) {
+		if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_DPAD_DOWN)) {
 			
 			move_paddle(0);
 		}
 
-		if (keystate[SDL_SCANCODE_UP]) {
+		if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_DPAD_UP)) {
 			
 			move_paddle(1);
 		}
@@ -576,7 +589,7 @@ int main (int argc, char *args[]) {
 		//display main menu
 		if (state == 0 ) {
 		
-			if (keystate[SDL_SCANCODE_SPACE]) {
+			if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_A)) {
 				
 				state = 1;
 			}
@@ -587,7 +600,7 @@ int main (int argc, char *args[]) {
 		//display gameover
 		} else if (state == 2) {
 		
-			if (keystate[SDL_SCANCODE_SPACE]) {
+			if (SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_A)) {
 				state = 0;
 				//delay for a little bit so the space bar press dosnt get triggered twice
 				//while the main menu is showing
@@ -680,6 +693,10 @@ int main (int argc, char *args[]) {
 
 int init(int width, int height, int argc, char *args[]) {
 
+	#if defined (NXDK)
+	XVideoSetMode(640, 480, 32, REFRESH_DEFAULT);
+	#endif
+
 	//Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 
@@ -699,7 +716,7 @@ int init(int width, int height, int argc, char *args[]) {
 		
 		} else {
 		
-			SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN_DESKTOP, &window, &renderer);
+			SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOWPOS_UNDEFINED, &window, &renderer);
 		}
 	}
 
