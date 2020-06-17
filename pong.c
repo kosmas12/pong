@@ -764,8 +764,12 @@ int main(int argc, char *args[])
 
 		if (sleep >= 0)
 		{
-
+			#if defined(NXDK)
+			XVideoWaitForVBlank();
+			#else
 			SDL_Delay(sleep);
+			#endif
+
 		}
 	}
 
@@ -787,7 +791,7 @@ int main(int argc, char *args[])
 	return 0;
 }
 
-int init(int width, int heigh)
+int init(int width, int height)
 {
 
 #if defined(NXDK)
@@ -795,13 +799,14 @@ int init(int width, int heigh)
 #endif
 
 	//Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
+	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER) != 0)
 	{
 
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 
 		return 1;
 	}
+	SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
 	//Create window
 	SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN, &window, &renderer);
@@ -837,7 +842,11 @@ int init(int width, int heigh)
 	}
 
 	//Load the title image
+	#if defined(NXDK)
 	title = SDL_LoadBMP("D:\\title.bmp");
+	#else
+	title = SDL_LoadBMP("title.bmp");
+	#endif
 
 	if (title == NULL)
 	{
@@ -848,7 +857,11 @@ int init(int width, int heigh)
 	}
 
 	//Load the numbermap image
+	#if defined(NXDK)
 	numbermap = SDL_LoadBMP("D:\\numbermap.bmp");
+	#else
+	numbermap = SDL_LoadBMP("numbermap.bmp");
+	#endif
 
 	if (numbermap == NULL)
 	{
@@ -859,7 +872,11 @@ int init(int width, int heigh)
 	}
 
 	//Load the gameover image
+	#if defined (NXDK)
 	end = SDL_LoadBMP("D:\\gameover.bmp");
+	#else
+	end = SDL_LoadBMP("gameover.bmp");
+	#endif
 
 	if (end == NULL)
 	{
