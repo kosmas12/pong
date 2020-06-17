@@ -4,3 +4,6 @@ pong.c.d
 pong.obj
 pong
 main.exe
+bin/gameover.bmp
+bin/numbermap.bmp
+bin/title.bmp

@@ -4,4 +4,12 @@ SRCS += pong.c
 NXDK_DIR = /home/$(USERNAME)/nxdk
 NXDK_SDL = y
 
+all_local: cp_resources all
+
 include $(NXDK_DIR)/Makefile
+
+cp_resources:
+	@mkdir -p $(OUTPUT_DIR)
+	cp gameover.bmp $(OUTPUT_DIR)
+	cp numbermap.bmp $(OUTPUT_DIR)
+	cp title.bmp $(OUTPUT_DIR)
