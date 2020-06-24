@@ -35,8 +35,8 @@ just clone the code and do it yourself. Enjoy!
 
 ![game play](http://i.imgur.com/CZhqp.png)
 
-![Xbox game play](http://i.imgur.com/xqemu1.png)
+![Xbox game play](xqemu1.png)
 
-![Xbox game play](http://i.imgur.com/xqemu2.png)
+![Xbox game play](xqemu2.png)
 
-![Xbox game play](http://i.imgur.com/xqemu3.png)
+![Xbox game play](xqemu3.png)
