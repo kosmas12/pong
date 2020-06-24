@@ -3,10 +3,17 @@
 This is a recreation of the classic pong video game. Implemented in the C
 programming language, using SDL library to display graphics on the screen.
 
+
+PC:
 To compile you need to have SDL installed on your system and the header files
 available to you operating systems PATH environment variable
 
 	gcc pong.c `sdl2-config --cflags --libs` -o pong
+
+Xbox:
+To compile you need to download nxdk (https://github.com/XboxDev/nxdk), change the
+nxdk path on Makefile.nxdk if it isn't correct already, and compile with
+	make -f Makefile.nxdk
 
 ### Update 2019
 
@@ -18,9 +25,9 @@ I will take any feature requests like updating the AI or movement animation if t
 just clone the code and do it yourself. Enjoy!
 
 ## Controls
-* space bar to start a game
-* arrow keys for movement
-* ESC to exit game
+* A to start a game
+* D-Pad for movement
+* X to exit game
 
 ## Images
 ![title screen](http://i.imgur.com/radat.png)
